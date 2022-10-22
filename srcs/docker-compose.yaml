@@ -47,6 +47,11 @@ services:
       expose:
         - "9000"
 
+    redis:
+      image: redis
+      networks:
+        - inception
+
 volumes:
   wordpress:
     driver: local
