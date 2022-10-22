@@ -16,8 +16,8 @@ fi
 
 # echo "define( 'CONCATENATE_SCRIPTS', false );" >> /var/www/wordpress/wp-config.php
 # echo "define( 'SCRIPT_DEBUG', true );" >> /var/www/wordpress/wp-config.php
-# echo "define( 'WP_HOME', 'https://mprigent.42.fr' );" >> /var/www/wordpress/wp-config.php
-# echo "define( 'WP_SITEURL', 'https://mprigent.42.fr' );" >> /var/www/wordpress/wp-config.php
+# echo "define( 'WP_HOME', 'https://arossign.42.fr' );" >> /var/www/wordpress/wp-config.php
+# echo "define( 'WP_SITEURL', 'https://arossign.42.fr' );" >> /var/www/wordpress/wp-config.php
 
 # echo "define( 'WP_DEBUG', true);" >> /var/www/wordpress/wp-config.php
 # echo "define( 'WP_DEBUG_LOG', true);" >> /var/www/wordpress/wp-config.php
