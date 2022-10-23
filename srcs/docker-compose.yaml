@@ -15,6 +15,20 @@ services:
     volumes:
       - wordpress:/var/www/wordpress
 
+  grafana:
+    container_name: grafana
+    build:
+      context: requirements/bonus/grafana
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    image: grafana
+    restart: always
+    networks:
+      - inception
+    volumes:
+      - monitor:/monitor
+
   mariadb:
     container_name: mariadb
     networks:
