@@ -77,8 +77,34 @@ services:
 
     redis:
       image: redis
+      build:
+        context: requirements/redis
+        dockerfile: Dockerfile
       networks:
         - inception
+      ports:
+        - "6379:6379"
+      env_file:
+       - .env
+      restart: always
+      volumes:
+        - wordpress:/var/www/wordpress
+      depends_on:
+        - wordpress
+
+    ftp-server:
+      build:
+        context: requirements/bonus/ftp-server
+        dockerfile: Dockerfile
+      container_name: ftp-server
+      ports:
+        - "21:21"
+        - "21100-21110:21100-21110"
+      volumes:
+        - wordpress:/var/www/wordpress
+      restart: always
+      env_file:
+        - .env
 
 volumes:
   wordpress:
