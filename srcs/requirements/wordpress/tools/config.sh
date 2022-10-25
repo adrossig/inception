@@ -26,7 +26,7 @@ if [ ! -f "/var/www/wordpress/wp-config.php" ]; then
     exit 1
   fi
   # WordPress Stuffs
-  wp core install --url="https://arossign.42.fr" --title="Inception" --admin_user="$ADMIN_USER" --admin_password="$ADMIN_PASSWORD" --admin_email="$ADMIN_EMAIL" --skip-email --path=/var/www/wordpress
+  wp core install --url=$DOMAIN_NAME --title=Inception --admin_user=$ADMIN_USER --admin_password=$ADMIN_PASSWORD --admin_email=$ADMIN_EMAIL --skip-email --path=/var/www/wordpress
   wp plugin install redis-cache --activate --path=/var/www/wordpress
   wp plugin update --all --path=/var/www/wordpress
   wp user create $WP_USER $WP_USER_EMAIL --role=author --user_pass=$WP_USER_PWD --path=/var/www/wordpress

@@ -13,7 +13,7 @@ stop:
 clean: stop
 	@sudo docker-compose -f $(PATH_YML) down -f
 
-flcean: clean
+fclean: clean
 	@sudo rm -fr /home/arossign/data/wordpress
 	@sudo rm -fr /home/arossign/data/mariadb
 	@docker system prune -af
