@@ -1,6 +1,7 @@
 FROM alpine:3.13
 
-RUN apk update && apk upgrade -y
+RUN apk update && apk upgrade
+RUN apk add curl libc6-compat
 RUN mkdir -p /monitor/grafana
 RUN wget -O /usr/bin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v1.2.5/dumb-init_1.2.5_x86_64
 RUN chmod +x /usr/bin/dumb-init

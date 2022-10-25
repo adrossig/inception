@@ -1,21 +1,25 @@
-FROM debian:buster
+# Base Image (Currently Most Stable Version 3.13)
+FROM        alpine:3.13
 
-RUN apt-get update && apt-get upgrade -y
-RUN apt-get install wget -y
-RUN apt-get install -y php7.3 \
-	php-fpm \
-	php-mysql \
-	mariadb-client
+# Package Installation
+RUN         apk update && \
+            apk add curl mariadb-client redis php7 php7-phar php7-json php7-curl php7-fpm php7-mysqli php7-iconv && \
+            wget -O /usr/bin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v1.2.5/dumb-init_1.2.5_x86_64 && \
+            chmod +x /usr/bin/dumb-init && \
+            mkdir -p /var/www/wordpress && \
+            curl -s -L https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar --output /usr/bin/wp && \
+            chmod +x /usr/bin/wp && \
+            wp core download --version=5.8.1 --path=/var/www/wordpress
 
-RUN wget https://fr.wordpress.org/wordpress-6.0-fr_FR.tar.gz -P /var/www
-RUN cd /var/www && tar -zxf wordpress-6.0-fr_FR.tar.gz && rm wordpress-6.0-fr_FR.tar.gz
-RUN chown -R root:root /var/www/wordpress
+# Copy Files
+COPY        conf/wp-config.php /tmp/wp-config.php
+COPY        tools/config.sh /tmp/config.sh
 
-RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-RUN chmod +x wp-cli.phar
-RUN mv wp-cli.phar /usr/local/bin/wp
+# Permission Control
+RUN         chmod +x /tmp/config.sh
 
-COPY ./conf/php/conf /etc/php/7.3/fpm/pool.d/www.conf
-COPY conf/config.sh config.sh
+# Handle Every Signal Correctly by Dumb Init to PID 1
+ENTRYPOINT  [ "/usr/bin/dumb-init", "--" ]
 
-ENTRYPOINT [ "bash", "config.sh" ]
+# Command to Execute by Entrypoint
+CMD         [ "sh", "-c", "/tmp/config.sh" ]

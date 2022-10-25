@@ -6,7 +6,7 @@ RUN apt install vim -y
 RUN apt install curl -y
 
 RUN mkdir -p /etc/nginx/ssl
-RUN apt install OpenSSL -y
+RUN apt install openssl -y
 
 RUN openssl req -newkey rsa:4096 -days 42 -nodes -x509 \
 -subj "/C=IT/ST=RO/L=Roma/O=42/OU=42/CN=marossign.42.fr/UID=arossign" \

@@ -1,21 +1,15 @@
-#!/bin/sh
+# !/bin/sh
 
-if [ ! -f "/etc/vsftpd/vsftpd.conf.bak" ]; then
-
-	mkdir -p /var/www/html
-
-	cp /etc/vsftpd/vsftpd.conf /etc/vsftpd/vsftpd.conf.bak
-	mv /tmp/vsftpd.conf /etc/vsftpd/vsftpd.conf
-
-	# Add the FTP_USER, change his password and declare him as the owner of wordpress folder and all subfolders
-	adduser $FTP_USR --disabled-password
-	echo "$FTP_USR:$FTP_PWD" | /usr/sbin/chpasswd &> /dev/null
-	chown -R $FTP_USR:$FTP_USR /var/www/html
-
-	#chmod +x /etc/vsftpd/vsftpd.conf
-	echo $FTP_USR | tee -a /etc/vsftpd.userlist &> /dev/null
-
+if [ ! -f "/etc/vsftpd/vsftpd.conf" ]; then
+  sleep 5;
+  cp /tmp/vsftpd.conf /etc/vsftpd/vsftpd.conf
+  adduser $FTP_USER --disabled-password --gecos "" --home /home/$FTP_USER --shell /bin/sh
+  echo "$FTP_USER:$FTP_PWD" | chpasswd > /dev/null
+  echo "local_root=$FTP_ROOT" >> /etc/vsftpd/vsftpd.conf
 fi
 
-echo "FTP started on :21"
-/usr/sbin/vsftpd /etc/vsftpd/vsftpd.conf
+chgrp -R $FTP_USER $FTP_ROOT
+chown -R $FTP_USER $FTP_ROOT
+chmod -R +x $FTP_ROOT
+
+vsftpd /etc/vsftpd/vsftpd.conf

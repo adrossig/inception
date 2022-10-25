@@ -9,4 +9,3 @@ COPY tools/config.sh /config.sh
 ENTRYPOINT [ "bash", "config.sh" ]
 
 EXPOSE 3306
-

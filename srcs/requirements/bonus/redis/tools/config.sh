@@ -1,3 +1,5 @@
+# !/bin/sh
+
 conf_file="/etc/redis.conf"
 
 # Check Whether Change on Configuration File is Needed or Not

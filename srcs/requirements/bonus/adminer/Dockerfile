@@ -1,39 +1,14 @@
 FROM alpine:3.13
 
-RUN apk update && \
-	apk add --no-cache \
-	curl \
-	less \
-	mariadb-client \
-	php8 \
-	php8-fpm \
-	php8-common \
-	php8-session \
-	php8-iconv \
-	php8-json \
-	php8-gd \
-	php8-curl \
-	php8-xml \
-	php8-mysqli \
-	php8-imap \
-	php8-pdo \
-	php8-pdo_mysql \
-	php8-soap \
-	php8-posix \
-	php8-gettext \
-	php8-ldap \
-	php8-ctype \
-	php8-dom \
-	php8-simplexml -y
+RUN apk update
+RUN apk add curl php7 php7-session php7-fpm php7-mysqli
+RUN wget -O /usr/bin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v1.2.5/dumb-init_1.2.5_x86_64
+RUN chmod +x /usr/bin/dumb-init
 
-RUN curl -L -O https://github.com/vrana/adminer/releases/download/v4.8.1/adminer-4.8.1.php
-RUN mkdir -p /var/www/html
-RUN mv ./adminer-4.8.1.php /var/www/html/index.php
-RUN adduser -u 82 -D -S -G www-data www-data
+COPY tools/config.sh /tmp/config.sh
 
-COPY conf/www.conf /etc/php8/php-fpm.d/www.conf
+RUN chmod +x /tmp/config.sh
 
-EXPOSE 9000
-STOPSIGNAL SIGQUIT
+ENTRYPOINT [ "/usr/bin/dumb-init", "--" ]
 
-CMD [ "php-fpm8", "--nodaemonize" ]
+CMD [ "sh", "-c", "/tmp/config.sh" ]

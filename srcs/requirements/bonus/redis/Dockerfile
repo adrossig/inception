@@ -1,8 +1,15 @@
-FROM apline:3.13
+# Base Image (Currently Most Stable Version 3.13)
+FROM alpine:3.13
 
-RUN apk update
-RUN apk add --no-cache --quiet --update redis
+RUN apk update && \
+	apk add redis && \
+	wget -O /usr/bin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v1.2.5/dumb-init_1.2.5_x86_64 && \
+	chmod +x /usr/bin/dumb-init
 
-COPY tools/config.sh /config.sh
+COPY tools/config.sh /tmp/config.sh
 
-ENTRYPOINT [ "bash", "config.sh" ]
+RUN chmod +x /tmp/config.sh
+
+ENTRYPOINT [ "/usr/bin/dumb-init", "--" ]
+
+CMD [ "sh", "-c", "/tmp/config.sh" ]
